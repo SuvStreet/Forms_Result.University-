@@ -13,6 +13,8 @@ export const TextInput = (dependencies) => {
     iconCode,
     size = 'sm',
     radius = 'sm',
+    type = 'text',
+    nameInput = 'input',
   } = dependencies
 
   const hiddenError = () => {
@@ -40,7 +42,8 @@ export const TextInput = (dependencies) => {
           </div>
         )}
         <input
-          type="text"
+          type={type}
+          name={nameInput}
           className={`input ${hiddenError()} `}
           placeholder={placeholder}
         />
