@@ -1,4 +1,4 @@
-import { Signin } from './components'
+import { Signin, Signup } from './components'
 
 import './App.css'
 
@@ -6,7 +6,8 @@ function App() {
   return (
     <>
       <div>
-        <Signin />
+        {/* <Signin /> */}
+        <Signup />
       </div>
     </>
   )
