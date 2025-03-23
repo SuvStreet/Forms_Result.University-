@@ -70,6 +70,10 @@
   border-radius: 1em;
 }
 
+.wrapper:has(input[type='radio']) {
+  border: none;
+}
+
 .wrapper[data-variant='filled'] {
   background-color: #797979;
 }
