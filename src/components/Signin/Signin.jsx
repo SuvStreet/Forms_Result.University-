@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { TextInput } from '../TextInput/TextInput'
 import { Button } from '../Button/Button'
+import { validateForm } from '../../services/validateForm'
 
 import { faAt, faKey } from '@fortawesome/free-solid-svg-icons'
 
@@ -24,14 +25,6 @@ const inputs = [
     nameInput: 'password',
   },
 ]
-
-const isValidEmail = (email) => {
-  return String(email)
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    )
-}
 
 const initialState = {
   email: '',
@@ -61,17 +54,7 @@ export const Signin = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    let newErrors = {}
-    inputs.forEach(({ nameInput, required }) => {
-      if (required && !formSignin[nameInput]) {
-        newErrors[nameInput] = 'Поле не может быть пустым'
-      } else if (
-        nameInput === 'email' &&
-        !isValidEmail(formSignin[nameInput])
-      ) {
-        newErrors[nameInput] = 'Некорректный email'
-      }
-    })
+    const newErrors = validateForm(inputs, formSignin)
 
     if (Object.keys(newErrors).length) {
       setErrors(newErrors)
