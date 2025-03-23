@@ -32,7 +32,6 @@ export const TextInput = (dependencies) => {
       {options.map((option, index) => (
         <div key={index} className="radio-label">
           <input
-            defaultChecked={index === 0}
             id={option.value}
             type="radio"
             name={nameInput}
