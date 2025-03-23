@@ -1,0 +1,95 @@
+import { useState } from 'react'
+import { TextInput } from '../TextInput/TextInput'
+import { Button } from '../Button/Button'
+
+import { faAt, faKey } from '@fortawesome/free-solid-svg-icons'
+
+const inputs = [
+  {
+    required: true,
+    label: 'Email',
+    description: 'Ваш email',
+    placeholder: 'email',
+    iconCode: faAt,
+    type: 'email',
+    nameInput: 'email',
+  },
+  {
+    required: true,
+    label: 'Password',
+    description: 'Ваш пароль',
+    placeholder: 'password',
+    iconCode: faKey,
+    type: 'password',
+    nameInput: 'password',
+  },
+]
+
+const isValidEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    )
+}
+
+const initialState = {
+  email: '',
+  password: '',
+}
+
+export const Signin = () => {
+  const [formSignin, setFormSignin] = useState(initialState)
+  const [errors, setErrors] = useState({})
+
+  const handleChange = (event) => {
+    const { name, value } = event.target
+
+    setFormSignin((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }))
+
+    if (errors[name]) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: '',
+      }))
+    }
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+
+    let newErrors = {}
+    inputs.forEach(({ nameInput, required }) => {
+      if (required && !formSignin[nameInput]) {
+        newErrors[nameInput] = 'Поле не может быть пустым'
+      } else if (
+        nameInput === 'email' &&
+        !isValidEmail(formSignin[nameInput])
+      ) {
+        newErrors[nameInput] = 'Некорректный email'
+      }
+    })
+
+    if (Object.keys(newErrors).length) {
+      setErrors(newErrors)
+      return
+    }
+
+    alert(`Вы успешно вошли ${formSignin.email.toUpperCase()}`)
+  }
+
+  return (
+    <div>
+      <h1>Signin</h1>
+      <form noValidate onSubmit={handleSubmit} onChange={handleChange}>
+        {inputs.map((input, index) => (
+          <TextInput key={index} {...input} error={errors[input.nameInput]} />
+        ))}
+        <Button text="Signin" />
+      </form>
+    </div>
+  )
+}
