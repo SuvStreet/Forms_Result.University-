@@ -15,6 +15,8 @@ export const TextInput = (dependencies) => {
     radius = 'sm',
     type = 'text',
     nameInput = 'input',
+    options = [],
+    ...props
   } = dependencies
 
   const hiddenError = () => {
@@ -25,6 +27,44 @@ export const TextInput = (dependencies) => {
     }
   }
 
+  const renderRadioOptions = () => (
+    <div className={`radio-group ${hiddenError()}`}>
+      {options.map((option, index) => (
+        <div key={index} className="radio-label">
+          <input
+            defaultChecked={index === 0}
+            id={option.value}
+            type="radio"
+            name={nameInput}
+            value={option.value}
+            {...props}
+          />
+          <label htmlFor={option.value}>{option.label}</label>
+        </div>
+      ))}
+    </div>
+  )
+
+  const renderTextInput = () => (
+    <div
+      data-variant={variant}
+      className={`wrapper ${hiddenError()} radius-${radius}`}
+    >
+      {iconCode && (
+        <div className={`icon ${hiddenError()}`}>
+          <Icon iconCode={iconCode} />
+        </div>
+      )}
+      <input
+        type={type}
+        name={nameInput}
+        className={`input ${hiddenError()}`}
+        placeholder={placeholder}
+        {...props}
+      />
+    </div>
+  )
+
   return (
     <div className="root_container" data-size={size}>
       <label className="label">
@@ -32,22 +72,9 @@ export const TextInput = (dependencies) => {
         {required && <span className="required">*</span>}
       </label>
       <small className="description">{description}</small>
-      <div
-        data-variant={variant}
-        className={`wrapper ${hiddenError()} radius-${radius}`}
-      >
-        {iconCode && (
-          <div className={`icon ${hiddenError()}`}>
-            <Icon iconCode={iconCode} />
-          </div>
-        )}
-        <input
-          type={type}
-          name={nameInput}
-          className={`input ${hiddenError()} `}
-          placeholder={placeholder}
-        />
-      </div>
+
+      {type === 'radio' ? renderRadioOptions() : renderTextInput()}
+
       {error && <div className="error errorMessage">{error}</div>}
     </div>
   )
