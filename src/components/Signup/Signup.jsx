@@ -55,7 +55,7 @@ const inputs = [
     required: true,
     label: 'Подтверждение пароля',
     description: 'Подтвердите пароль',
-    placeholder: 'повторите пороль',
+    placeholder: 'повторите пароль',
     type: 'password',
     nameInput: 'passwordConfirm',
     iconCode: faKey,
