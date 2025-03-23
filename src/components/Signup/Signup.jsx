@@ -3,6 +3,8 @@ import { validateForm } from '../../services/validateForm'
 import { Button } from '../Button/Button'
 import { TextInput } from '../TextInput/TextInput'
 
+import { faFaceSmileBeam, faKey, faAt } from '@fortawesome/free-solid-svg-icons'
+
 const inputs = [
   {
     required: true,
@@ -18,6 +20,7 @@ const inputs = [
     placeholder: 'никнейм',
     type: 'text',
     nameInput: 'nickname',
+    iconCode: faFaceSmileBeam,
   },
   {
     required: true,
@@ -26,28 +29,36 @@ const inputs = [
     placeholder: 'email',
     type: 'email',
     nameInput: 'email',
+    iconCode: faAt,
   },
   {
     required: true,
     label: 'Пол',
+    description: 'Ваш пол',
     type: 'radio',
     nameInput: 'sex',
+    options: [
+      { label: 'Мужской', value: 'male' },
+      { label: 'Женский', value: 'female' },
+    ],
   },
   {
     required: true,
     label: 'Пароль',
     description: 'Ваш пароль',
-    placeholder: 'password',
+    placeholder: 'пароль',
     type: 'password',
     nameInput: 'password',
+    iconCode: faKey,
   },
   {
     required: true,
     label: 'Подтверждение пароля',
     description: 'Подтвердите пароль',
-    placeholder: 'password',
+    placeholder: 'повторите пороль',
     type: 'password',
     nameInput: 'passwordConfirm',
+    iconCode: faKey,
   },
 ]
 
