@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { validateForm } from '../../services/validateForm'
 import { Button } from '../Button/Button'
 import { TextInput } from '../TextInput/TextInput'
@@ -72,6 +72,7 @@ const initialState = {
 }
 
 export const Signup = () => {
+  const formRef = useRef(null)
   const [formValues, setFormValues] = useState(initialState)
   const [errors, setErrors] = useState({})
 
@@ -101,12 +102,20 @@ export const Signup = () => {
       return
     }
 
+    formRef.current.reset()
+    setFormValues(initialState)
+
     alert(`Вы успешно зарегистрировались ${formValues.name.toUpperCase()} `)
   }
 
   return (
     <div>
-      <form noValidate onSubmit={handleSubmit} onChange={handleChange}>
+      <form
+        ref={formRef}
+        noValidate
+        onSubmit={handleSubmit}
+        onChange={handleChange}
+      >
         <h1>Signup</h1>
         {inputs.map((input, index) => (
           <TextInput key={index} {...input} error={errors[input.nameInput]} />
