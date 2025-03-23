@@ -48,7 +48,7 @@ export const TextInput = (dependencies) => {
           placeholder={placeholder}
         />
       </div>
-      {error && <div className="error errorMessage">Input error message</div>}
+      {error && <div className="error errorMessage">{error}</div>}
     </div>
   )
 }
