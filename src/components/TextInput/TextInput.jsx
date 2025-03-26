@@ -35,8 +35,10 @@ export const TextInput = (dependencies) => {
             id={option.value}
             type="radio"
             name={nameInput}
-            value={option.value}
+            checked={props.value === option.value}
             {...props}
+            value={option.value}
+            required={required}
           />
           <label htmlFor={option.value}>{option.label}</label>
         </div>
@@ -59,6 +61,7 @@ export const TextInput = (dependencies) => {
         name={nameInput}
         className={`input ${hiddenError()}`}
         placeholder={placeholder}
+        required={required}
         {...props}
       />
     </div>
