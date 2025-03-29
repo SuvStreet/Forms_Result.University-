@@ -35,10 +35,10 @@ export const TextInput = (dependencies) => {
             id={option.value}
             type="radio"
             name={nameInput}
-            checked={props.value === option.value}
-            {...props}
+            defaultChecked={option.defaultChecked}
             value={option.value}
             required={required}
+            {...props}
           />
           <label htmlFor={option.value}>{option.label}</label>
         </div>
