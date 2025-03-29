@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { TextInput } from '../TextInput/TextInput'
 import { Button } from '../Button/Button'
 import { validateForm } from '../../services/validateForm'
@@ -26,22 +26,13 @@ const inputs = [
   },
 ]
 
-const initialState = {
-  email: '',
-  password: '',
-}
-
 export const Signin = ({ onSubmit }) => {
-  const [formSignin, setFormSignin] = useState(initialState)
   const [errors, setErrors] = useState({})
 
-  const handleChange = (event) => {
-    const { name, value } = event.target
+  const formRef = useRef(null)
 
-    setFormSignin((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }))
+  const handleChange = (event) => {
+    const { name } = event.target
 
     if (errors[name]) {
       setErrors((prevErrors) => ({
@@ -54,16 +45,20 @@ export const Signin = ({ onSubmit }) => {
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    const newErrors = validateForm(inputs, formSignin)
+    const formData = new FormData(formRef.current)
+
+    const formValues = Object.fromEntries(formData)
+
+    const newErrors = validateForm(inputs, formValues)
 
     if (Object.keys(newErrors).length) {
       setErrors(newErrors)
       return
     }
 
-    onSubmit(formSignin)
+    onSubmit(formValues)
 
-    setFormSignin(initialState)
+    formRef.current.reset()
   }
 
   return (
@@ -72,12 +67,12 @@ export const Signin = ({ onSubmit }) => {
       <form
         noValidate
         onSubmit={handleSubmit}
+        onChange={handleChange}
+        ref={formRef}
       >
         {inputs.map((input, index) => (
           <TextInput
             key={index}
-            value={formSignin[input.nameInput]}
-            onChange={handleChange}
             error={errors[input.nameInput]}
             {...input}
           />
