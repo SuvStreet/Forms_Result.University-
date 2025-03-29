@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { validateForm } from '../../services/validateForm'
 import { Button } from '../Button/Button'
 import { TextInput } from '../TextInput/TextInput'
@@ -38,7 +38,7 @@ const inputs = [
     type: 'radio',
     nameInput: 'sex',
     options: [
-      { label: 'Мужской', value: 'male' },
+      { label: 'Мужской', value: 'male', defaultChecked: true },
       { label: 'Женский', value: 'female' },
     ],
   },
@@ -62,27 +62,13 @@ const inputs = [
   },
 ]
 
-const initialState = {
-  name: '',
-  nickname: '',
-  email: '',
-  sex: 'male',
-  password: '',
-  passwordConfirm: '',
-}
-
 export const Signup = ({ onSubmit }) => {
-  const [formValues, setFormValues] = useState(initialState)
   const [errors, setErrors] = useState({})
+  const formRef = useRef(null)
 
   const handleChange = (event) => {
-    const { name, value } = event.target
-
-    setFormValues((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }))
-
+    const { name } = event.target
+    
     if (errors[name]) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -94,6 +80,10 @@ export const Signup = ({ onSubmit }) => {
   const handleSubmit = (event) => {
     event.preventDefault()
 
+    const fromData = new FormData(formRef.current)
+
+    const formValues = Object.fromEntries(fromData)
+
     const newErrors = validateForm(inputs, formValues)
 
     if (Object.keys(newErrors).length) {
@@ -103,7 +93,7 @@ export const Signup = ({ onSubmit }) => {
 
     onSubmit(formValues)
 
-    setFormValues(initialState)
+    formRef.current.reset()
   }
 
   return (
@@ -111,16 +101,12 @@ export const Signup = ({ onSubmit }) => {
       <form
         noValidate
         onSubmit={handleSubmit}
+        onChange={handleChange}
+        ref={formRef}
       >
         <h1>Signup</h1>
         {inputs.map((input, index) => (
-          <TextInput
-            value={formValues[input.nameInput]}
-            onChange={handleChange}
-            key={index}
-            error={errors[input.nameInput]}
-            {...input}
-          />
+          <TextInput key={index} error={errors[input.nameInput]} {...input} />
         ))}
         <Button text="Signup" />
       </form>
